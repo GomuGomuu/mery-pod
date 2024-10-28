@@ -20,11 +20,11 @@ fi
 
 # Tesseract OCR
 sudo apt-get update
-sudo apt-get install tesseract-ocr
+sudo apt-get install -y tesseract-ocr
 
 # --- 3. Install and Configure PostgreSQL ---
 sudo apt-get update
-sudo apt-get install postgresql postgresql-contrib
+sudo apt-get install -y postgresql postgresql-contrib
 
 # --- 4. Configure Environment Variables (for PostgreSQL) ---
 # Merry (load .env first)
@@ -38,7 +38,7 @@ sudo -u postgres psql -c "CREATE DATABASE ${POSTGRES_DB} OWNER ${POSTGRES_USER};
 
 # --- 5. Install and Configure Redis ---
 sudo apt-get update
-sudo apt-get install redis-server
+sudo apt-get install -y redis-server
 
 # Start Redis
 sudo systemctl enable redis-server
@@ -46,7 +46,7 @@ sudo systemctl start redis-server
 
 # --- 6. Install Chromium ---
 sudo apt-get update
-sudo apt-get install chromium-browser
+sudo apt-get install -y chromium-browser
 
 # --- 7. Download and Configure ChromeDriver ---
 # Get the Chromium version (replace the placeholder with your actual version)
