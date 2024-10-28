@@ -69,7 +69,3 @@ git clone https://github.com/your-username/one-piece-card-game-setup.git
 * **Screen Magic:** Use `screen -r <session_name>` to reattach to the `merry` or `olop` screen session.
 * **Troubleshooting:** Check your environment variables, install any missing dependencies, and consult the repositories' documentation for more guidance.
 * **ChromeDriver:**  Ensure that you have the correct version of ChromeDriver for your Chromium installation.
-
-##  Let's Conquer This Together!
-
-Happy Hunting! 
