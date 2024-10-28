@@ -209,8 +209,10 @@ if [ ${START_STEP} -le 10 ]; then
     echo "Step 10: Configuring environment variables for Redis and Selenium..."
     # Merge environment variables from both projects
     echo "Merging environment variables from olop-price-scraping and merry..."
-    cat olop-price-scraping/linux.env merry/src/config/example.env >merged.env
-    source merged.env
+    cat olop-price-scraping/linux.env merry/src/config/.env.example >merged.env
+    sed -i 's/DB_HOST=.*/DB_HOST=localhost/' merged.env
+    sed -i 's/POSTGRES_HOST=.*/POSTGRES_HOST=localhost/' merged.env
+    export $(grep -v '^#' merged.env | xargs)
     echo "Environment variables configured."
 fi
 
