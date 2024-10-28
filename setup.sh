@@ -204,14 +204,14 @@ if [ ${START_STEP} -le 9 ]; then
     cd ..
 fi
 
-# --- 10. Configure Environment Variables (for Redis and Selenium) ---
+# --- 10. Configure Environment Variables ---
 if [ ${START_STEP} -le 10 ]; then
     echo "Step 10: Configuring environment variables for Redis and Selenium..."
-    # Olop Price Scraping (load .env first)
-    cd olop-price-scraping
-    cp linux.env .env
-    source .env
-    cd ..
+    # Merge environment variables from both projects
+    echo "Merging environment variables from olop-price-scraping and merry..."
+    cat olop-price-scraping/linux.env merry/src/config/example.env >merged.env
+    source merged.env
+    echo "Environment variables configured."
 fi
 
 # --- 11. Initialize Merry ---
