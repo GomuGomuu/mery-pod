@@ -48,19 +48,6 @@ if [ ${START_STEP} -le 2 ]; then
         exit 1
     fi
 
-    # Poetry (ensure it's installed; this is just a check)
-    if ! command -v poetry &>/dev/null; then
-        echo "  Installing Poetry..."
-        curl -sSL https://install.python-poetry.org | python3 -
-        if [ $? -ne 0 ]; then
-            echo "  Error: Failed to install Poetry."
-            exit 1
-        fi
-        echo "  Poetry installed."
-    else
-        echo "  Poetry is already installed."
-    fi
-
     # Tesseract OCR
     echo "  Installing Tesseract OCR..."
     sudo apt-get update
@@ -186,6 +173,13 @@ if [ ${START_STEP} -le 9 ]; then
     cd merry
     python3 -m venv venv
     source venv/bin/activate
+
+    if ! pip install poetry; then
+        echo "  Error: Failed to install Poetry."
+        exit 1
+    fi
+    echo "  Poetry installed."
+
     if ! poetry install --no-root -C src/config/; then
         echo "  Error: Failed to install dependencies for Merry."
         exit 1
