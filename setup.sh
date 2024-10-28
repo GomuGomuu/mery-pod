@@ -1,8 +1,21 @@
 #!/bin/bash
 
-# --- 1. Download Repositories ---
-git clone https://github.com/GomuGomuu/merry.git
-git clone https://github.com/GomuGomuu/olop-price-scraping.git
+# --- 1. Download Repositories (with Git Pull if existing) ---
+if [ ! -d "merry" ]; then
+  git clone https://github.com/GomuGomuu/merry.git
+else
+  cd merry
+  git pull
+  cd ..
+fi
+
+if [ ! -d "olop-price-scraping" ]; then
+  git clone https://github.com/GomuGomuu/olop-price-scraping.git
+else
+  cd olop-price-scraping
+  git pull
+  cd ..
+fi
 
 # --- 2. Install Dependencies (General) ---
 
@@ -32,9 +45,14 @@ cd merry
 cp .env.example .env
 source .env
 
-# Create PostgreSQL user and database
-sudo -u postgres psql -c "CREATE USER ${POSTGRES_USER} WITH PASSWORD '${POSTGRES_PASSWORD}';"
-sudo -u postgres psql -c "CREATE DATABASE ${POSTGRES_DB} OWNER ${POSTGRES_USER};"
+# Check if PostgreSQL user and database already exist
+if ! sudo -u postgres psql -c "SELECT 1 FROM pg_user WHERE usename = '${POSTGRES_USER}';" &> /dev/null; then
+  sudo -u postgres psql -c "CREATE USER ${POSTGRES_USER} WITH PASSWORD '${POSTGRES_PASSWORD}';"
+fi
+
+if ! sudo -u postgres psql -c "SELECT 1 FROM pg_database WHERE datname = '${POSTGRES_DB}';" &> /dev/null; then
+  sudo -u postgres psql -c "CREATE DATABASE ${POSTGRES_DB} OWNER ${POSTGRES_USER};"
+fi
 
 # --- 5. Install and Configure Redis ---
 sudo apt-get update
