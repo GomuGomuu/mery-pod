@@ -209,7 +209,7 @@ if [ ${START_STEP} -le 10 ]; then
     echo "Step 10: Configuring environment variables for Redis and Selenium..."
     # Olop Price Scraping (load .env first)
     cd olop-price-scraping
-    cp .env.example .env
+    cp linux.env .env
     source .env
     cd ..
 fi
@@ -219,13 +219,13 @@ if [ ${START_STEP} -le 11 ]; then
     echo "Step 11: Initializing Merry..."
     cd merry
     source venv/bin/activate
-    if ! python manage.py migrate; then
+    if ! python src/manage.py migrate; then
         echo "  Error: Failed to migrate Merry database."
         exit 1
     fi
     echo "  Merry database migrated."
 
-    if ! python manage.py collectstatic --noinput; then
+    if ! python src/manage.py collectstatic --noinput; then
         echo "  Error: Failed to collect static files for Merry."
         exit 1
     fi
@@ -250,7 +250,7 @@ if [ ${START_STEP} -le 13 ]; then
     echo "Step 13: Starting services in screen sessions..."
 
     # Merry (with Flower)
-    screen -dmS merry bash -c "cd merry && source venv/bin/activate && python manage.py runserver"
+    screen -dmS merry bash -c "cd merry && source venv/bin/activate && python src/manage.py runserver"
 
     # Flower
     screen -dmS flower bash -c "cd merry && source venv/bin/activate && flower"
