@@ -64,10 +64,17 @@ cd merry
 pip install flower
 
 # --- 9.  Install Dependencies for Merry and Olop Price Scraping ---
+#  Using virtual environments
+#  Merry
 cd merry
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 
+#  Olop Price Scraping
 cd ../olop-price-scraping
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 
 # --- 10. Configure Environment Variables (for Redis and Selenium) ---
@@ -80,10 +87,14 @@ cd merry
 python manage.py migrate
 python manage.py collectstatic --noinput
 
-# --- 12.  Start Services in Screen Sessions ---
+# --- 12. Install screen ---
+sudo apt-get install -y screen
+
+# --- 13. Start Services in Screen Sessions ---
 
 # Merry (with Flower)
 screen -S merry
+source venv/bin/activate
 python manage.py runserver
 python manage.py flower --address=0.0.0.0:5555
 screen -d -r merry
@@ -91,6 +102,7 @@ screen -d -r merry
 # Olop Price Scraping
 cd ../olop-price-scraping
 screen -S olop
+source venv/bin/activate
 flask run
 screen -d -r olop
 
