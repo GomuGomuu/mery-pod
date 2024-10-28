@@ -102,9 +102,11 @@ echo "Downloading and configuring ChromeDriver..."
 CHROME_VERSION=$(chromium-browser --version | awk '{print $3}' | sed 's/\./_/g')
 echo "  Detected Chromium version: ${CHROME_VERSION}"
 
-# Download the ChromeDriver
+# If the ChromeDriver for the detected version is not available 
+#  or you want to manually specify the version
+CHROME_DRIVER_VERSION=110_0_5462_79 # Replace with a compatible version 
 wget -nv https://chromedriver.storage.googleapis.com/index.html
-wget -nv https://chromedriver.storage.googleapis.com/${CHROME_VERSION}/chromedriver_linux64.zip
+wget -nv https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip
 if [ $? -ne 0 ]; then
   echo "  Error: Failed to download ChromeDriver."
   exit 1
