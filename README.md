@@ -55,7 +55,19 @@ git clone https://github.com/GomuGomuu/mery-pod.git
 ./setup.sh
 ```
 
-**That's it!  Merry, Olop Price Scraping, Chromium, Flower, and PostgreSQL will start running in the background.**
+**This script will handle everything for you!  It will:**
+
+* Download and configure the Merry and Olop Price Scraping repositories.
+* Install necessary dependencies.
+* Set up PostgreSQL and Redis databases.
+* Install and configure Chromium and ChromeDriver.
+* Initialize Merry and start the services in the background.
+
+**You can control the setup process by specifying a starting step:**
+
+* To start from the beginning: `./setup.sh`
+* To start from a specific step: `./setup.sh <step_number>` 
+   * For example, to start from step 6 (Chromium installation): `./setup.sh 6`
 
 ##  Access the Applications
 
@@ -69,3 +81,16 @@ git clone https://github.com/GomuGomuu/mery-pod.git
 * **Screen Magic:** Use `screen -r <session_name>` to reattach to the `merry` or `olop` screen session.
 * **Troubleshooting:** Check your environment variables, install any missing dependencies, and consult the repositories' documentation for more guidance.
 * **ChromeDriver:**  Ensure that you have the correct version of ChromeDriver for your Chromium installation.
+
+
+##  Usage
+
+[Explain how to use the project, how to run the scraping process, how to access the results, etc. Be specific and provide examples.]
+
+## Contributing
+
+Ahoy!  Want to join our crew?  Contributions are most welcome! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) file for details on how to contribute to this project.
+
+## License
+
+This project is licensed under the [MIT](LICENSE) License - see the [LICENSE](LICENSE) file for details.
