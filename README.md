@@ -16,14 +16,14 @@ This script will set you up with both applications running outside Docker, using
 2. **Clone the Repository:**
 
 ```bash
-git clone https://github.com/your-username/one-piece-card-game-setup.git
+git clone https://github.com/GomuGomuu/mery-pod.git
 ```
 
 3. **Set Up Your Treasure Map:**
 
 * **Navigate to the repository:**
     ```bash
-    cd one-piece-card-game-setup
+    cd mery-pod
     ```
 * **Make the script executable:**
     ```bash
