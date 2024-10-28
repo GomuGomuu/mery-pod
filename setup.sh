@@ -74,7 +74,6 @@ if [ ${START_STEP} -le 4 ]; then
     echo "Step 4: Configuring environment variables for PostgreSQL..."
     # Merry (load .env first)
     cd merry
-    cp .env.example .env
     source .env
 
     # Create PostgreSQL user and database
@@ -157,11 +156,15 @@ fi
 if [ ${START_STEP} -le 8 ]; then
     echo "Step 8: Installing Flower..."
     cd merry
+    python3 -m venv venv
+    source venv/bin/activate
+
     if ! pip install flower; then
         echo "  Error: Failed to install Flower."
         exit 1
     fi
     echo "  Flower installed."
+    deactivate
     cd ..
 fi
 
