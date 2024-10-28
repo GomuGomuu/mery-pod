@@ -96,23 +96,15 @@ if ! sudo systemctl start redis-server; then
 fi
 echo "  Redis service started."
 
-# --- 6. Install Chromium ---
-echo "Installing Chromium..."
-sudo apt-get update
-if ! sudo apt-get install -y chromium-browser; then
-  echo "  Error: Failed to install Chromium."
-  exit 1
-fi
-echo "  Chromium installed."
-
-# --- 7. Download and Configure ChromeDriver ---
+# --- 6. Download and Configure ChromeDriver ---
 echo "Downloading and configuring ChromeDriver..."
-# Get the Chromium version (replace the placeholder with your actual version)
-CHROME_VERSION=$(chromium-browser --version | awk '{print $2}' | sed 's/\./_/g')
+# Get the Chromium version
+CHROME_VERSION=$(chromium-browser --version | awk '{print $3}' | sed 's/\./_/g')
 echo "  Detected Chromium version: ${CHROME_VERSION}"
-# Download the ChromeDriver (replace the placeholder with your actual version)
+
+# Download the ChromeDriver
 wget -nv https://chromedriver.storage.googleapis.com/index.html
-wget -nv https://chromedriver.storage.googleapis.com/$(CHROME_VERSION)/chromedriver_linux64.zip
+wget -nv https://chromedriver.storage.googleapis.com/${CHROME_VERSION}/chromedriver_linux64.zip
 if [ $? -ne 0 ]; then
   echo "  Error: Failed to download ChromeDriver."
   exit 1
@@ -126,11 +118,11 @@ if [ $? -ne 0 ]; then
 fi
 echo "  ChromeDriver unzipped."
 
-# Place ChromeDriver in your PATH (adjust if needed)
+# Place ChromeDriver in your PATH
 sudo mv chromedriver /usr/local/bin/
 echo "  ChromeDriver moved to /usr/local/bin."
 
-# --- 8. Install Flower ---
+# --- 7. Install Flower ---
 echo "Installing Flower..."
 cd merry
 if ! pip install flower; then
@@ -139,7 +131,7 @@ if ! pip install flower; then
 fi
 echo "  Flower installed."
 
-# --- 9.  Install Dependencies for Merry and Olop Price Scraping ---
+# --- 8.  Install Dependencies for Merry and Olop Price Scraping ---
 echo "Installing dependencies for Merry and Olop Price Scraping..."
 #  Using virtual environments
 #  Merry
@@ -162,13 +154,14 @@ if ! pip install -r requirements.txt; then
 fi
 echo "  Dependencies for Olop Price Scraping installed."
 
-# --- 10. Configure Environment Variables (for Redis and Selenium) ---
+# --- 9.  Configure Environment Variables (for Redis and Selenium) ---
 echo "Configuring environment variables for Redis and Selenium..."
 # Olop Price Scraping (load .env first)
 cd olop-price-scraping
+cp .env.example .env
 source .env
 
-# --- 11.  Initialize Merry ---
+# --- 10.  Initialize Merry ---
 echo "Initializing Merry..."
 cd merry
 if ! python manage.py migrate; then
@@ -183,7 +176,7 @@ if ! python manage.py collectstatic --noinput; then
 fi
 echo "  Merry static files collected."
 
-# --- 12. Install screen ---
+# --- 11. Install screen ---
 echo "Installing screen..."
 sudo apt-get update
 if ! sudo apt-get install -y screen; then
@@ -192,13 +185,13 @@ if ! sudo apt-get install -y screen; then
 fi
 echo "  Screen installed."
 
-# --- 13. Start Services in Screen Sessions ---
+# --- 12. Start Services in Screen Sessions ---
 echo "Starting services in screen sessions..."
 
 # Merry (with Flower)
 screen -S merry
 source venv/bin/activate
-if ! python manage.py runserver; then
+if ! python manage.py runserver 0.0.0.0:8000; then
   echo "  Error: Failed to start Merry server."
   exit 1
 fi
@@ -214,7 +207,7 @@ echo "  Merry and Flower started in background."
 cd ../olop-price-scraping
 screen -S olop
 source venv/bin/activate
-if ! flask run; then
+if ! flask run --host=0.0.0.0; then
   echo "  Error: Failed to start Olop Price Scraping server."
   exit 1
 fi
