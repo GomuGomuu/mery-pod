@@ -10,7 +10,7 @@ fi
 
 # --- 1. Download Repositories (with Git Pull if existing) ---
 if [ ${START_STEP} -le 1 ]; then
-  echo "Downloading or updating repositories..."
+echo "Step 1: Downloading or updating repositories..."
   if [ ! -d "merry" ]; then
     git clone https://github.com/GomuGomuu/merry.git
     echo "  merry repository cloned."
@@ -34,7 +34,7 @@ fi
 
 # --- 2. Install Dependencies (General) ---
 if [ ${START_STEP} -le 2 ]; then
-  echo "Installing general dependencies..."
+  echo "Sep 2: Installing dependencies (General)..."
 
   # Python (ensure it's installed; this is just a check)
   if ! command -v python3 &> /dev/null; then
@@ -60,7 +60,7 @@ fi
 
 # --- 3. Install and Configure PostgreSQL ---
 if [ ${START_STEP} -le 3 ]; then
-  echo "Installing and configuring PostgreSQL..."
+  echo "Step 3: Installing and configuring PostgreSQL..."
   sudo apt-get update
   if ! sudo apt-get install -y postgresql postgresql-contrib; then
     echo "  Error: Failed to install PostgreSQL."
@@ -71,7 +71,7 @@ fi
 
 # --- 4. Configure Environment Variables (for PostgreSQL) ---
 if [ ${START_STEP} -le 4 ]; then
-  echo "Configuring PostgreSQL environment variables..."
+  echo "Step 4: Configuring environment variables for PostgreSQL..."
   # Merry (load .env first)
   cd merry
   cp .env.example .env
@@ -96,7 +96,7 @@ fi
 
 # --- 5. Install and Configure Redis ---
 if [ ${START_STEP} -le 5 ]; then
-  echo "Installing and configuring Redis..."
+  echo "Step 5: Installing and configuring Redis..."
   sudo apt-get update
   if ! sudo apt-get install -y redis-server; then
     echo "  Error: Failed to install Redis."
@@ -116,7 +116,7 @@ fi
 
 # --- 6. Install Chromium ---
 if [ ${START_STEP} -le 6 ]; then
-  echo "Installing Chromium..."
+  echo "Step 6: Installing Chromium..."
   sudo apt-get update
   # This check is not necessary as it will install the latest version
   # if ! sudo apt-get install -y chromium-browser; then
@@ -128,7 +128,7 @@ fi
 
 # --- 7. Download and Configure ChromeDriver ---
 if [ ${START_STEP} -le 7 ]; then
-  echo "Downloading and configuring ChromeDriver..."
+  echo "Step 7: Downloading and configuring ChromeDriver..."
   # Get the Chromium version
   CHROME_VERSION=$(chromium-browser --version | awk '{print $3}' | sed 's/\./_/g')
   echo "  Detected Chromium version: ${CHROME_VERSION}"
@@ -158,7 +158,7 @@ fi
 
 # --- 8. Install Flower ---
 if [ ${START_STEP} -le 8 ]; then
-  echo "Installing Flower..."
+  echo "Step 8: Installing Flower..."
   cd merry
   if ! pip install flower; then
     echo "  Error: Failed to install Flower."
@@ -169,7 +169,7 @@ fi
 
 # --- 9.  Install Dependencies for Merry and Olop Price Scraping ---
 if [ ${START_STEP} -le 9 ]; then
-  echo "Installing dependencies for Merry and Olop Price Scraping..."
+  echo "Step 9: Installing dependencies for Merry and Olop Price Scraping..."
   #  Using virtual environments
   #  Merry
   cd merry
@@ -194,7 +194,7 @@ fi
 
 # --- 10.  Configure Environment Variables (for Redis and Selenium) ---
 if [ ${START_STEP} -le 10 ]; then
-  echo "Configuring environment variables for Redis and Selenium..."
+  echo "Step 10: Configuring environment variables for Redis and Selenium..."
   # Olop Price Scraping (load .env first)
   cd olop-price-scraping
   cp .env.example .env
@@ -203,7 +203,7 @@ fi
 
 # --- 11.  Initialize Merry ---
 if [ ${START_STEP} -le 11 ]; then
-  echo "Initializing Merry..."
+  echo "Step 11: Initializing Merry..."
   cd merry
   if ! python manage.py migrate; then
     echo "  Error: Failed to migrate Merry database."
@@ -220,7 +220,7 @@ fi
 
 # --- 12. Install screen ---
 if [ ${START_STEP} -le 12 ]; then
-  echo "Installing screen..."
+  echo "Step 12: Installing screen..."
   sudo apt-get update
   if ! sudo apt-get install -y screen; then
     echo "  Error: Failed to install screen."
@@ -231,7 +231,7 @@ fi
 
 # --- 13. Start Services in Screen Sessions ---
 if [ ${START_STEP} -le 13 ]; then
-  echo "Starting services in screen sessions..."
+  echo "Sep 13: Starting services in screen sessions..."
 
   # Merry (with Flower)
   screen -S merry
